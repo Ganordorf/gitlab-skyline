@@ -33,7 +33,7 @@ async def get_contributions(semaphore, domain, username, token, date, contributi
                     [int(date.strftime('%j')), int(date.strftime('%u')) - 1, len(json)])
 
         except Exception as err:
-            print(f"Exception occured: {err}")
+            print(f"Exception occured: {url} -> {err}")
             pass
 
 
