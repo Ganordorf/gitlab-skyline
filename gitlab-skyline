@@ -26,7 +26,7 @@ async def get_contributions(semaphore, domain, username, token, date, contributi
         try:
             after = (date-datetime.timedelta(days=1)).strftime("%Y-%m-%d")
             before = (date+datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-            url = f"{domain}/api/v4/users/{username}/events?after={after}&before={before}"
+            url = f"{domain}/api/v4/users/{username}/events?after={after}&before={before}&per_page=100"
             async with semaphore, client.get(url) as response:
                 json = await response.json()
                 contribution_matrix.append(
@@ -49,6 +49,8 @@ def parse_contribution_matrix(contribution_matrix):
     ordered_contribution_matrix = sorted(contribution_matrix, key=lambda x: x[0])
     year_contribution_list = [row.pop(2) for row in ordered_contribution_matrix]
 
+    print(f"maxContributions: {max_contributions_by_day}")
+
     for i in range(day_offset):
         year_contribution_list.insert(0, 0)
 
@@ -62,7 +64,7 @@ def generate_skyline_stl(username, year, contribution_matrix):
     base_width = 30
     base_length = 150
     base_height = 10
-    max_length_contributionbar = 20
+    max_length_contributionbar = max_contributions_by_day
     bar_base_dimension = 2.5
 
     base_top_offset = (base_width - base_top_width) / 2
