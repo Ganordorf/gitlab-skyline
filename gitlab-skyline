@@ -184,10 +184,10 @@ def main():
 
     semaphore = asyncio.Semaphore(max_requests)
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(
-        asyncio.wait(
-            [get_contributions(semaphore, domain, username, token, date, contribution_matrix) for date in
-             all_dates_in_year(year)]))
+    tasks = [loop.create_task(
+        get_contributions(semaphore, domain, username, token, date, contribution_matrix)
+    ) for date in all_dates_in_year(year)]
+    loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
 
     print("Generating STL...")
