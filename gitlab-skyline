@@ -64,7 +64,7 @@ def generate_skyline_stl(username, year, contribution_matrix):
     base_width = 30
     base_length = 150
     base_height = 10
-    max_length_contributionbar = max_contributions_by_day
+    max_length_contributionbar = max_contributions_by_day * 0.5
     bar_base_dimension = 2.5
 
     base_top_offset = (base_width - base_top_width) / 2
